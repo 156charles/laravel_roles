@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('/logs', [ProductController::class, 'logs'])->name('logs');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

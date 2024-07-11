@@ -14,4 +14,8 @@ class Product extends Model
         'description',
         'price'
     ];
+
+    public function logs(){
+        return $this->hasMany(Log::class);
+    }
 }

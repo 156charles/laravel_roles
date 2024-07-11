@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLog;
+use App\Models\Log;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
+    public function logs(){
+        $logs = Log::get();
+        // $logs = auth()->user()->logs;
+        return view('product.logs', compact('logs'));
+    }
+
     public function index(Request $request)
     {
         $prod = Product::orderBy('price');
@@ -34,6 +42,9 @@ class ProductController extends Controller
 
         $product = Product::create($fields);
 
+        $log_entry = 'Added a new product ' .  $product->name . ' with the ID# of ' . $product->id;
+        event(new UserLog($log_entry));
+
         if ($product->save()) {
             return redirect()->back()->with('success', 'Product Successfully added.');
         }
@@ -52,6 +63,9 @@ class ProductController extends Controller
         // $product = Product::findOrFail($product);
         $product->update($fields);
 
+        $log_entry = 'Update the product ' .  $product->name . ' with the ID# of ' . $product->id;
+        event(new UserLog($log_entry));
+
         return redirect()->back()->with('update', 'Product Updated Successfully.');
     }
 
@@ -60,6 +74,10 @@ class ProductController extends Controller
         abort_if(Gate::denies('delete_product'), code: 403);
 
         $product->delete();
+
+        $log_entry = 'Deleted the product ' .  $product->name . ' with the ID# of ' . $product->id;
+        event(new UserLog($log_entry));
+
 
         return redirect()->back()->with('delete', 'Product deleted successfully.');
     }

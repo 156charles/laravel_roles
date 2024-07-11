@@ -57,6 +57,8 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $product->name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $product->description }}</td>
                             <td class="px-6 py-4 whitespace-nowrap w-[20%]">{{ $product->price }}</td>
+                            @can('update_product')
+                                
                             <td class="px-6 py-4 whitespace-nowrap flex items-center gap-4">
                                 @can('update_product')
                                     <button onclick="openEdit({{ $product->id }})">
@@ -81,6 +83,7 @@
                                     </button>
                                 @endcan
                             </td>
+                            @endcan
                         </tr>
                     @empty
                         {{-- <div class="bg-white absolute top-[9.5rem] w-[96.9%] p-4 text-center border-t border-gray-200">
